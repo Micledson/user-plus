@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  mysql_db:
+    build:
+      dockerfile: config/db/docker/Dockerfile.mysql
+      context: ../../
+    container_name: mysql_container
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+      - MYSQL_DATABASE=userplus
+    ports:
+      - "3306:3306"
