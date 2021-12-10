@@ -1,11 +1,11 @@
 package services
 
 import (
-	"errors"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"user-plus/domain"
+	"user-plus/domain/errs"
 	"user-plus/endpoints/dto/response"
 	"user-plus/services"
 	IMockInterfaces "user-plus/tests/mocks/repository"
@@ -45,7 +45,10 @@ func TestFindUserByEmail(t *testing.T) {
 
 		userRepo := IMockInterfaces.NewMockIUserRepository(controller)
 
-		errExpected := errors.New("Erro muito triste")
+		errExpected := &errs.ApiErr{
+			StatusCode: 400,
+			Message:    "Dados Solicitados não encontrados",
+		}
 
 		userRepo.EXPECT().FindUserByEmail(gomock.Any()).Return(nil, errExpected)
 

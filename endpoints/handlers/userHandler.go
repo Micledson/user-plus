@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"net/http"
 	"user-plus/data/repository"
+	"user-plus/domain/errs"
 	"user-plus/services"
 	"user-plus/services/interfaces"
 )
@@ -33,8 +34,12 @@ func (uh UserHandler) FindUserByEmail(ctx echo.Context) error {
 	user, err := uh.service.FindUserByEmail(email)
 	if err != nil {
 		log.Error(err)
-		return err
+		return writeError(ctx, err)
 	}
 
-	return ctx.JSON(http.StatusOK, user)
+	return ctx.JSON(200, user)
+}
+
+func writeError(ctx echo.Context, apiErr *errs.ApiErr) error {
+	return ctx.JSON(apiErr.StatusCode, apiErr.AsMessage())
 }

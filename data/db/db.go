@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"log"
 	"time"
+	"user-plus/domain/errs"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
 
-func GetConnection() (*sqlx.DB, error) {
+func GetConnection() (*sqlx.DB, *errs.ApiErr) {
 	// Load vars env
 	//user := utils.GetVar("DB_USER")
 	//pwd := utils.GetVar("DB_PASSWORD")
@@ -26,8 +27,10 @@ func GetConnection() (*sqlx.DB, error) {
 	db, err := sqlx.Open("mysql", url)
 
 	if err != nil {
-		log.Print("Error while accessing database: " + err.Error())
-		return nil, err
+		err := fmt.Sprintf(`Error while accessing database: %s`, err.Error())
+		apiErr := &errs.ApiErr{Message: err}
+		log.Print(apiErr)
+		return nil, apiErr
 	}
 
 	// See "Important settings" section.

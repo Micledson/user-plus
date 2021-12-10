@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"net/http"
 	"testing"
+	"user-plus/domain/errs"
 	"user-plus/endpoints/dto/response"
 	"user-plus/endpoints/handlers"
 	"user-plus/tests/endpoints/utils"
@@ -35,6 +37,27 @@ func TestFindUserByEmail(t *testing.T) {
 			"/send/:email/find",
 			utils.NewCtxParams().Add("email", "micledson@gmail.com"),
 			string(expectJson),
+		)
+	})
+	t.Run("HandlersFindUserByEmailFail", func(t *testing.T) {
+		controller := gomock.NewController(t)
+		defer controller.Finish()
+
+		expectError := &errs.ApiErr{
+			StatusCode: 400,
+			Message:    "Dados solicitados não encontrados.",
+		}
+
+		userService := IMockInterfaces.NewMockIUserService(controller)
+		userService.EXPECT().FindUserByEmail(gomock.Any()).Return(nil, expectError)
+		handler := handlers.NewUserHandlerFromService(userService)
+
+		utils.RunGenericMethodGet(t,
+			http.StatusBadRequest,
+			handler.FindUserByEmail,
+			"/send/:email/find",
+			utils.NewCtxParams().Add("email", "micledson@gmail.com"),
+			utils.GetJsonNoData(),
 		)
 	})
 }

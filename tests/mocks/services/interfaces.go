@@ -6,6 +6,7 @@ package mock_interfaces
 
 import (
 	reflect "reflect"
+	errs "user-plus/domain/errs"
 	response "user-plus/endpoints/dto/response"
 
 	gomock "github.com/golang/mock/gomock"
@@ -35,11 +36,11 @@ func (m *MockIUserService) EXPECT() *MockIUserServiceMockRecorder {
 }
 
 // FindUserByEmail mocks base method.
-func (m *MockIUserService) FindUserByEmail(email string) (*response.UserReponse, error) {
+func (m *MockIUserService) FindUserByEmail(email string) (*response.UserReponse, *errs.ApiErr) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindUserByEmail", email)
 	ret0, _ := ret[0].(*response.UserReponse)
-	ret1, _ := ret[1].(error)
+	ret1, _ := ret[1].(*errs.ApiErr)
 	return ret0, ret1
 }
 
