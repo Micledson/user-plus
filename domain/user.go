@@ -1,6 +1,8 @@
 package domain
 
-import "user-plus/tests/endpoints/dto/response"
+import (
+	"user-plus/endpoints/dto/response"
+)
 
 type User struct {
 	Id       int    `db:"id"`

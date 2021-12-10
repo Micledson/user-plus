@@ -3,7 +3,7 @@ package services
 import (
 	"github.com/labstack/gommon/log"
 	"user-plus/data/interfaces"
-	"user-plus/tests/endpoints/dto/response"
+	"user-plus/endpoints/dto/response"
 )
 
 type UserService struct {

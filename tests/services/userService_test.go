@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"user-plus/domain"
+	"user-plus/endpoints/dto/response"
 	"user-plus/services"
-	"user-plus/tests/endpoints/dto/response"
 	IMockInterfaces "user-plus/tests/mocks/repository"
 )
 
